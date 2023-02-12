@@ -17,8 +17,14 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
-    },
+    }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "scripts/z.js", "scripts/z.js"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "scripts/z.js",
+    "scripts/z.js"
+  ],
   "exclude": ["node_modules"]
 }
