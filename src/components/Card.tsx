@@ -4,9 +4,17 @@ type Props = {
   course: string;
   cutoff_mark: number;
   group: string;
+  shift: string;
 };
 
-const Cards = ({ institution, campus, course, cutoff_mark, group }: Props) => {
+const Cards = ({
+  institution,
+  campus,
+  course,
+  cutoff_mark,
+  group,
+  shift,
+}: Props) => {
   return (
     <div className="border box-border rounded max-w-4xl">
       <div className="flex">
@@ -30,6 +38,10 @@ const Cards = ({ institution, campus, course, cutoff_mark, group }: Props) => {
           <div className="flex flex-col">
             <span className="text-xs break-words">Grupo:</span>
             <span className="text-sm break-words">{group}</span>
+          </div>
+          <div className="flex flex-col">
+            <span className="text-xs break-words">Turno:</span>
+            <span className="text-sm break-words">{shift}</span>
           </div>
         </div>
       </div>
