@@ -7,7 +7,7 @@ type Props = {
   shift: string;
 };
 
-const Cards = ({
+const CardCourse = ({
   institution,
   campus,
   course,
@@ -49,4 +49,4 @@ const Cards = ({
   );
 };
 
-export default Cards;
+export default CardCourse;

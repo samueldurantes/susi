@@ -1,4 +1,4 @@
-import Cards from '@/components/Card';
+import CardCourse from '@/components/CardCourse';
 import data from '@/data/data.json';
 
 const Home = () => {
@@ -6,7 +6,7 @@ const Home = () => {
     <div className="h-screen flex items-center flex-col py-2">
       <div className="flex flex-col gap-4">
         {data.map((item, key) => (
-          <Cards key={key} {...item} />
+          <CardCourse key={key} {...item} />
         ))}
       </div>
     </div>
