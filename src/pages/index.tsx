@@ -1,15 +1,71 @@
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import CardCourse from '@/components/CardCourse';
-import dataJson from '@/data/data.json';
+import data from '@/data/data.json';
+
+type ICourseData = {
+  institution: string;
+  campus: string;
+  course: string;
+  cutoff_mark: number;
+  group: string;
+  shift: string;
+};
 
 const Home = () => {
-  const data: any[] = dataJson;
-
   const [courses, setCourses] = useState(() => data.slice(0, 5));
   const [currentPage, setCurrentPage] = useState(0);
   const [showLoader, setShowLoader] = useState(true);
   const loaderRef = useRef(null);
+  
+    const [courses, setCourses] = useState<string[]>([]);
+  const [couresData, setCouresData] = useState<ICourseData[]>(data);
+  const [shifts, setShifts] = useState<string[]>([]);
+  const [universities, setUniversities] = useState<string[]>([]);
+  useEffect(() => {
+    const dataCourses: string[] = [];
+    const dataUniversity: string[] = [];
+    data.forEach((item) => {
+      let [courseName] = item.course.split('-');
+      courseName = courseName.substring(0, courseName.length - 1);
+      !dataCourses.includes(courseName) && dataCourses.push(courseName);
+      !dataUniversity.includes(item.institution) &&
+        dataUniversity.push(item.institution);
+    });
+    setCourses(dataCourses);
+    setShifts(['Integral', 'Matutino', 'Noturno', 'Vespertino']);
+    setUniversities(dataUniversity);
+  }, []);
+
+  const handleSelectCourse = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (courses.includes(event.target.value)) {
+      const Data = [...data].filter((item) => {
+        let [courseName] = item.course.split('-');
+        courseName = courseName.substring(0, courseName.length - 1);
+        return courseName === event.target.value;
+      });
+      setCouresData(Data);
+    }
+  };
+  const handleSelectShift = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (shifts.includes(event.target.value)) {
+      const Data = [...data].filter((item) => {
+        return item.shift === event.target.value;
+      });
+      setCouresData(Data);
+    }
+  };
+
+  const handleSelectUniversity = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    if (universities.includes(event.target.value)) {
+      const Data = [...data].filter((item) => {
+        return item.institution === event.target.value;
+      });
+      setCouresData(Data);
+    }
+  };
 
   useEffect(() => {
     const options = {
@@ -63,8 +119,53 @@ const Home = () => {
           para facilitar a vida de quem também tem essa curiosidade.
         </p>
       </div>
+      <div className="flex  gap-x-3">
+        <div className="py-2">
+          <input
+            type="text"
+            list="coursesData"
+            placeholder="Todos os cursos"
+            className="border-[1px] border-gray-50 rounded-md p-1"
+            onChange={(e) => handleSelectCourse(e)}
+          />
+          <datalist id="coursesData">
+            {courses.map((item: string) => {
+              return <option key={item}>{item}</option>;
+            })}
+          </datalist>
+        </div>
+        <div className="py-2">
+          <input
+            type="text"
+            list="shiftData"
+            placeholder="Todos os turnos"
+            className="border-[1px] border-gray-50 rounded-md p-1"
+            onChange={(e) => handleSelectShift(e)}
+          />
+          <datalist id="shiftData">
+            <option>Integral</option>
+            <option>Matutino</option>
+            <option>Noturno</option>
+            <option>Vespertino</option>
+          </datalist>
+        </div>
+        <div className="py-2">
+          <input
+            type="text"
+            list="universityData"
+            placeholder="Todas as Universidades"
+            className="border-[1px] border-gray-50 rounded-md p-1"
+            onChange={(e) => handleSelectUniversity(e)}
+          />
+          <datalist id="universityData">
+            {universities.map((item: string, key: number) => {
+              return <option key={key}>{item}</option>;
+            })}
+          </datalist>
+        </div>
+      </div>
       <div className="flex flex-col gap-4">
-        {courses.map((item, key) => (
+        {couresData.map((item: ICourseData, key: number) => (
           <CardCourse key={key} {...item} />
         ))}
       </div>
