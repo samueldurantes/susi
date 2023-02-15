@@ -2,14 +2,14 @@ import CardCourse from '@/components/CardCourse';
 import data from '@/data/data.json';
 import { useEffect, useState } from 'react';
 
-interface ICourseData {
+type ICourseData = {
   institution: string;
   campus: string;
   course: string;
   cutoff_mark: number;
   group: string;
   shift: string;
-}
+};
 
 const Home = () => {
   const [courses, setCourses] = useState<string[]>([]);

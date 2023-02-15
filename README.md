@@ -5,14 +5,17 @@ Hello! This project was created as a personal endeavor since I was curious about
 ### Getting started
 
 1. Install packages
+
 ```bash
 $ yarn install
 ```
 
 2. Run in the development environment
+
 ```bash
 $ yarn dev
 ```
 
 ### References
+
 - [SISU reports](https://sisu.mec.gov.br/#/relatorio#onepage)
