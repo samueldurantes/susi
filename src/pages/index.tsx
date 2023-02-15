@@ -1,6 +1,7 @@
+import React, { useEffect, useRef, useState } from 'react';
+
 import CardCourse from '@/components/CardCourse';
 import data from '@/data/data.json';
-import { useEffect, useState } from 'react';
 
 type ICourseData = {
   institution: string;
@@ -12,7 +13,12 @@ type ICourseData = {
 };
 
 const Home = () => {
-  const [courses, setCourses] = useState<string[]>([]);
+  const [courses, setCourses] = useState(() => data.slice(0, 5));
+  const [currentPage, setCurrentPage] = useState(0);
+  const [showLoader, setShowLoader] = useState(true);
+  const loaderRef = useRef(null);
+  
+    const [courses, setCourses] = useState<string[]>([]);
   const [couresData, setCouresData] = useState<ICourseData[]>(data);
   const [shifts, setShifts] = useState<string[]>([]);
   const [universities, setUniversities] = useState<string[]>([]);
@@ -61,14 +67,46 @@ const Home = () => {
     }
   };
 
+  useEffect(() => {
+    const options = {
+      root: null,
+      rootMargin: '20px',
+      threshold: 1.0,
+    };
+
+    const observer = new IntersectionObserver((entities) => {
+      const target = entities[0];
+
+      if (target.isIntersecting) {
+        setCurrentPage((old) => old + 1);
+        setShowLoader(true);
+      }
+    }, options);
+
+    if (loaderRef.current) {
+      observer.observe(loaderRef.current);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (courses.length === data.length) {
+      setShowLoader(false);
+      return;
+    }
+
+    setTimeout(() => {
+      setCourses((old) => data.slice(0, old.length + 5));
+    }, 1500);
+  }, [currentPage, courses, data]);
+
   return (
-    <div className="h-screen flex items-center flex-col px-6 py-2">
+    <div className="h-screen flex items-center flex-col px-6 py-4">
       <div className="flex flex-col max-w-4xl py-4 gap-4">
         <h1 className="text-2xl font-mono">Notas de cortes - ENEM 2022</h1>
         <p>
-          Olá! Este projeto foi criado como um projeto pessoal, já que eu tinha
-          curiosidade em saber as notas de corte do ano anterior e o SISU só
-          disponibiliza um arquivo{' '}
+          Olá! Esse projeto foi criado com intuito de facilitar a visualização
+          das notas de corte do SISU, já que eu tinha curiosidade em saber as notas de
+          corte do ano anterior e o SISU só disponibiliza um arquivo{' '}
           <a
             className="text-blue-500 hover:text-blue-700 hover:underline"
             href="https://en.wikipedia.org/wiki/Microsoft_Excel#File_formats"
@@ -131,6 +169,11 @@ const Home = () => {
           <CardCourse key={key} {...item} />
         ))}
       </div>
+      {showLoader && (
+        <div className="my-4" ref={loaderRef}>
+          Carregando mais cursos...
+        </div>
+      )}
     </div>
   );
 };
