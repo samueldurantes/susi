@@ -9,56 +9,70 @@ const Home = () => {
   const [couresData, setCouresData] = useState<Course[]>(dataJson);
   const [shifts, setShifts] = useState<string[]>([]);
   const [universities, setUniversities] = useState<string[]>([]);
+  const [degrees, setDegrees] = useState<string[]>([]);
+  const [filters, setFilters] = useState<string[]>(['', '', '', '']);
 
   useEffect(() => {
     const dataCourses: string[] = [];
     const dataUniversity: string[] = [];
 
     dataJson.forEach((item) => {
-      let [courseName] = item.course.split('-');
-      courseName = courseName.substring(0, courseName.length - 1);
-      !dataCourses.includes(courseName) && dataCourses.push(courseName);
+      let [courseName] = item.course.split(' - ');
+      const couseNameString: string = courseName.trim();
+      !dataCourses.includes(couseNameString) &&
+        dataCourses.push(couseNameString);
       !dataUniversity.includes(item.institution) &&
         dataUniversity.push(item.institution);
     });
-
     setCourses(dataCourses);
     setShifts(['Integral', 'Matutino', 'Noturno', 'Vespertino']);
+    setDegrees(['Licenciatura', 'Bacharelado']);
     setUniversities(dataUniversity);
   }, []);
 
-  const handleSelectCourse = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (courses.includes(event.target.value)) {
-      const data = [...dataJson].filter((item) => {
-        let [courseName] = item.course.split('-');
-        courseName = courseName.substring(0, courseName.length - 1);
-        return courseName === event.target.value;
-      });
+  useEffect(() => {
+    Filter();
+  }, [filters]);
 
-      setCouresData(data);
+  const Filter = () => {
+    let data = [...couresData];
+    if (filters[0] != '') {
+      data = data.filter((item) => {
+        let [courseName] = item.course.split(' - ');
+        const couseNameString: string = courseName.trim();
+        return couseNameString === filters[0];
+      });
     }
+    if (filters[1] != '') {
+      data = data.filter((item) => item.shift === filters[1]);
+    }
+    if (filters[2] != '') {
+      data = data.filter((item) => item.institution === filters[2]);
+    }
+    if (filters[3] != '') {
+      data = data.filter((item) => {
+        let [, degreeType] = item.course.split(' - ');
+        const degreeTypeString: string = degreeType.trim();
+        return degreeTypeString === filters[3];
+      });
+    }
+    setCouresData(data);
   };
 
-  const handleSelectShift = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (shifts.includes(event.target.value)) {
-      const data = [...dataJson].filter((item) => {
-        return item.shift === event.target.value;
-      });
-
-      setCouresData(data);
+  const updateFilters = (index: number, filter: string) => {
+    if (
+      !courses.includes(filter) &&
+      !shifts.includes(filter) &&
+      !universities.includes(filter) &&
+      !degrees.includes(filter) &&
+      filter !== ''
+    ) {
+      return;
     }
-  };
-
-  const handleSelectUniversity = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    if (universities.includes(event.target.value)) {
-      const data = [...dataJson].filter((item) => {
-        return item.institution === event.target.value;
-      });
-
-      setCouresData(data);
-    }
+    setCouresData(dataJson);
+    const newFilters = [...filters];
+    newFilters[index] = filter;
+    setFilters(newFilters);
   };
 
   return (
@@ -88,7 +102,7 @@ const Home = () => {
             list="coursesData"
             placeholder="Todos os cursos"
             className="border-[1px] border-gray-50 rounded-md w-full p-2"
-            onChange={(e) => handleSelectCourse(e)}
+            onChange={(e) => updateFilters(0, e.target.value)}
           />
           <datalist id="coursesData">
             {courses.map((item: string) => {
@@ -102,7 +116,7 @@ const Home = () => {
             list="shiftData"
             placeholder="Todos os turnos"
             className="border-[1px] border-gray-50 rounded-md w-full p-2"
-            onChange={(e) => handleSelectShift(e)}
+            onChange={(e) => updateFilters(1, e.target.value)}
           />
           <datalist id="shiftData">
             <option>Integral</option>
@@ -117,12 +131,25 @@ const Home = () => {
             list="universityData"
             placeholder="Todas as Universidades"
             className="border-[1px] border-gray-50 rounded-md w-full p-2"
-            onChange={(e) => handleSelectUniversity(e)}
+            onChange={(e) => updateFilters(2, e.target.value)}
           />
           <datalist id="universityData">
             {universities.map((item: string, key: number) => {
               return <option key={key}>{item}</option>;
             })}
+          </datalist>
+        </div>
+        <div className="py-2 w-full">
+          <input
+            type="text"
+            list="degreeData"
+            placeholder="Tipos de Graduação"
+            className="border-[1px] border-gray-50 rounded-md w-full p-2"
+            onChange={(e) => updateFilters(3, e.target.value)}
+          />
+          <datalist id="degreeData">
+            <option>Bacharelado</option>
+            <option>Licenciatura</option>
           </datalist>
         </div>
       </div>
