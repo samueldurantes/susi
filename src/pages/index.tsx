@@ -153,11 +153,15 @@ const Home = () => {
           </datalist>
         </div>
       </div>
-      <div className="flex flex-col gap-4">
-        {couresData.map((item: Course, key: number) => (
-          <CardCourse key={key} {...item} />
-        ))}
-      </div>
+      {couresData.length === 0 ? (
+        <p>Nenhum resultado encontrado...</p>
+      ) : (
+        <div className="flex flex-col gap-4">
+          {couresData.map((item: Course, key: number) => (
+            <CardCourse key={key} {...item} />
+          ))}
+        </div>
+      )}
     </div>
   );
 };
