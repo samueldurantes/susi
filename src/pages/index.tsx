@@ -24,7 +24,6 @@ const Home = () => {
       !dataUniversity.includes(item.institution) &&
         dataUniversity.push(item.institution);
     });
-    console.log(dataCourses);
     setCourses(dataCourses);
     setShifts(['Integral', 'Matutino', 'Noturno', 'Vespertino']);
     setDegrees(['Licenciatura', 'Bacharelado']);
@@ -60,7 +59,6 @@ const Home = () => {
     setCouresData(data);
   };
 
-  console.log(filters);
   const updateFilters = (index: number, filter: string) => {
     if (
       !courses.includes(filter) &&
