@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import CardCourse from '@/components/CardCourse';
-import data from '@/data/data.json';
+import dataJson from '@/data/data.json';
 
 type CourseData = {
   institution: string;
@@ -13,56 +13,23 @@ type CourseData = {
 };
 
 const Home = () => {
-  const [currentPage, setCurrentPage] = useState(0);
-  const [showLoader, setShowLoader] = useState(true);
   const [courses, setCourses] = useState<string[]>([]);
-  const [couresData, setCouresData] = useState<CourseData[]>(data.slice(0, 5));
+  const [couresData, setCouresData] = useState<CourseData[]>(dataJson);
   const [shifts, setShifts] = useState<string[]>([]);
   const [universities, setUniversities] = useState<string[]>([]);
-  const loaderRef = useRef(null);
-
-  useEffect(() => {
-    const options = {
-      root: null,
-      rootMargin: '20px',
-      threshold: 1.0,
-    };
-
-    const observer = new IntersectionObserver((entities) => {
-      const target = entities[0];
-
-      if (target.isIntersecting) {
-        setCurrentPage((old) => old + 1);
-        setShowLoader(true);
-      }
-    }, options);
-
-    if (loaderRef.current) {
-      observer.observe(loaderRef.current);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (courses.length === data.length) {
-      setShowLoader(false);
-      return;
-    }
-
-    setTimeout(() => {
-      setCouresData((old) => couresData.slice(0, old.length + 5));
-    }, 1500);
-  }, [currentPage, couresData, courses]);
 
   useEffect(() => {
     const dataCourses: string[] = [];
     const dataUniversity: string[] = [];
-    data.forEach((item) => {
+
+    dataJson.forEach((item) => {
       let [courseName] = item.course.split('-');
       courseName = courseName.substring(0, courseName.length - 1);
       !dataCourses.includes(courseName) && dataCourses.push(courseName);
       !dataUniversity.includes(item.institution) &&
         dataUniversity.push(item.institution);
     });
+
     setCourses(dataCourses);
     setShifts(['Integral', 'Matutino', 'Noturno', 'Vespertino']);
     setUniversities(dataUniversity);
@@ -70,20 +37,23 @@ const Home = () => {
 
   const handleSelectCourse = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (courses.includes(event.target.value)) {
-      const Data = [...data].filter((item) => {
+      const data = [...dataJson].filter((item) => {
         let [courseName] = item.course.split('-');
         courseName = courseName.substring(0, courseName.length - 1);
         return courseName === event.target.value;
       });
-      setCouresData(Data);
+
+      setCouresData(data);
     }
   };
+
   const handleSelectShift = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (shifts.includes(event.target.value)) {
-      const Data = [...data].filter((item) => {
+      const data = [...dataJson].filter((item) => {
         return item.shift === event.target.value;
       });
-      setCouresData(Data);
+
+      setCouresData(data);
     }
   };
 
@@ -91,10 +61,11 @@ const Home = () => {
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     if (universities.includes(event.target.value)) {
-      const Data = [...data].filter((item) => {
+      const data = [...dataJson].filter((item) => {
         return item.institution === event.target.value;
       });
-      setCouresData(Data);
+
+      setCouresData(data);
     }
   };
 
@@ -118,13 +89,13 @@ const Home = () => {
           para facilitar a vida de quem também tem essa curiosidade.
         </p>
       </div>
-      <div className="flex  gap-x-3">
-        <div className="py-2">
+      <div className="flex flex-col sm:flex-row max-w-4xl w-full gap-4">
+        <div className="py-2 w-full">
           <input
             type="text"
             list="coursesData"
             placeholder="Todos os cursos"
-            className="border-[1px] border-gray-50 rounded-md p-1"
+            className="border-[1px] border-gray-50 rounded-md p-1 w-full"
             onChange={(e) => handleSelectCourse(e)}
           />
           <datalist id="coursesData">
@@ -133,12 +104,12 @@ const Home = () => {
             })}
           </datalist>
         </div>
-        <div className="py-2">
+        <div className="py-2 w-full">
           <input
             type="text"
             list="shiftData"
             placeholder="Todos os turnos"
-            className="border-[1px] border-gray-50 rounded-md p-1"
+            className="border-[1px] border-gray-50 rounded-md p-1 w-full"
             onChange={(e) => handleSelectShift(e)}
           />
           <datalist id="shiftData">
@@ -148,12 +119,12 @@ const Home = () => {
             <option>Vespertino</option>
           </datalist>
         </div>
-        <div className="py-2">
+        <div className="py-2 w-full">
           <input
             type="text"
             list="universityData"
             placeholder="Todas as Universidades"
-            className="border-[1px] border-gray-50 rounded-md p-1"
+            className="border-[1px] border-gray-50 rounded-md p-1 w-full"
             onChange={(e) => handleSelectUniversity(e)}
           />
           <datalist id="universityData">
@@ -168,11 +139,6 @@ const Home = () => {
           <CardCourse key={key} {...item} />
         ))}
       </div>
-      {showLoader && (
-        <div className="my-4" ref={loaderRef}>
-          Carregando mais cursos...
-        </div>
-      )}
     </div>
   );
 };
