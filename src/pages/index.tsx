@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react';
 
 import CardCourse from '@/components/CardCourse';
 import dataJson from '@/data/data.json';
+import { Course } from '@/types';
 
 const Home = () => {
   const [courses, setCourses] = useState<string[]>([]);
-  const [couresData, setCouresData] = useState<CourseData[]>(dataJson);
+  const [couresData, setCouresData] = useState<Course[]>(dataJson);
   const [shifts, setShifts] = useState<string[]>([]);
   const [universities, setUniversities] = useState<string[]>([]);
 
@@ -126,7 +127,7 @@ const Home = () => {
         </div>
       </div>
       <div className="flex flex-col gap-4">
-        {couresData.map((item: CourseData, key: number) => (
+        {couresData.map((item: Course, key: number) => (
           <CardCourse key={key} {...item} />
         ))}
       </div>
