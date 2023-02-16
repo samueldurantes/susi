@@ -1,11 +1,6 @@
-type Props = {
-  institution: string;
-  campus: string;
-  course: string;
-  cutoff_mark: number;
-  group: string;
-  shift: string;
-};
+import { Course } from '@/types';
+
+type Props = {} & Course;
 
 const CardCourse = ({
   institution,

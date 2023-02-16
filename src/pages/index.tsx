@@ -3,15 +3,6 @@ import React, { useEffect, useState } from 'react';
 import CardCourse from '@/components/CardCourse';
 import dataJson from '@/data/data.json';
 
-type CourseData = {
-  institution: string;
-  campus: string;
-  course: string;
-  cutoff_mark: number;
-  group: string;
-  shift: string;
-};
-
 const Home = () => {
   const [courses, setCourses] = useState<string[]>([]);
   const [couresData, setCouresData] = useState<CourseData[]>(dataJson);
@@ -89,13 +80,13 @@ const Home = () => {
           para facilitar a vida de quem também tem essa curiosidade.
         </p>
       </div>
-      <div className="flex flex-col sm:flex-row max-w-4xl w-full gap-4">
+      <div className="flex flex-col sm:flex-row max-w-4xl w-full gap-x-2 mb-4">
         <div className="py-2 w-full">
           <input
             type="text"
             list="coursesData"
             placeholder="Todos os cursos"
-            className="border-[1px] border-gray-50 rounded-md p-1 w-full"
+            className="border-[1px] border-gray-50 rounded-md w-full p-2"
             onChange={(e) => handleSelectCourse(e)}
           />
           <datalist id="coursesData">
@@ -109,7 +100,7 @@ const Home = () => {
             type="text"
             list="shiftData"
             placeholder="Todos os turnos"
-            className="border-[1px] border-gray-50 rounded-md p-1 w-full"
+            className="border-[1px] border-gray-50 rounded-md w-full p-2"
             onChange={(e) => handleSelectShift(e)}
           />
           <datalist id="shiftData">
@@ -124,7 +115,7 @@ const Home = () => {
             type="text"
             list="universityData"
             placeholder="Todas as Universidades"
-            className="border-[1px] border-gray-50 rounded-md p-1 w-full"
+            className="border-[1px] border-gray-50 rounded-md w-full p-2"
             onChange={(e) => handleSelectUniversity(e)}
           />
           <datalist id="universityData">
