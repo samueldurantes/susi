@@ -1,79 +1,70 @@
-import React, { useEffect, useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 import CardCourse from '@/components/CardCourse';
 import dataJson from '@/data/data.json';
 import { Course } from '@/types';
+import { ViewportList } from 'react-viewport-list';
 
-const Home = () => {
-  const [courses, setCourses] = useState<string[]>([]);
-  const [couresData, setCouresData] = useState<Course[]>(dataJson);
-  const [shifts, setShifts] = useState<string[]>([]);
-  const [universities, setUniversities] = useState<string[]>([]);
-  const [degrees, setDegrees] = useState<string[]>([]);
-  const [filters, setFilters] = useState<string[]>(['', '', '', '']);
+type HomeProps = {
+  data: {
+    courses: string[];
+    shifts: string[];
+    degrees: string[];
+    universities: string[];
+    initialCoursesData: Course[];
+  };
+};
 
-  useEffect(() => {
-    const dataCourses: string[] = [];
-    const dataUniversity: string[] = [];
+type Filter = {
+  course: string;
+  shift: string;
+  institution: string;
+  degreeType: string;
+};
+const INITIAL_FILTER_VALUE: Filter = {
+  course: '',
+  degreeType: '',
+  institution: '',
+  shift: '',
+};
 
-    dataJson.forEach((item) => {
-      let [courseName] = item.course.split(' - ');
-      const couseNameString: string = courseName.trim();
-      !dataCourses.includes(couseNameString) &&
-        dataCourses.push(couseNameString);
-      !dataUniversity.includes(item.institution) &&
-        dataUniversity.push(item.institution);
-    });
-    setCourses(dataCourses);
-    setShifts(['Integral', 'Matutino', 'Noturno', 'Vespertino']);
-    setDegrees(['Licenciatura', 'Bacharelado']);
-    setUniversities(dataUniversity);
-  }, []);
+const Home = ({
+  data: { courses, degrees, shifts, universities, initialCoursesData },
+}: HomeProps) => {
+  const [coursesData, setCoursesData] = useState<Course[]>(initialCoursesData);
+  const [filter, setFilter] = useState<Filter>(INITIAL_FILTER_VALUE);
+  const viewPortRef = useRef(null);
 
-  useEffect(() => {
-    Filter();
-  }, [filters]);
+  const updateCourses = (filterKey: keyof Filter) => {
+    if (filter[filterKey] === '') return;
 
-  const Filter = () => {
-    let data = [...couresData];
-    if (filters[0] != '') {
-      data = data.filter((item) => {
-        let [courseName] = item.course.split(' - ');
-        const couseNameString: string = courseName.trim();
-        return couseNameString === filters[0];
+    if (filterKey === 'course') {
+      const filteredCourses = initialCoursesData.filter(({ course }) => {
+        const [name] = course.split(' - ');
+        return name.trim() === filter[filterKey];
       });
-    }
-    if (filters[1] != '') {
-      data = data.filter((item) => item.shift === filters[1]);
-    }
-    if (filters[2] != '') {
-      data = data.filter((item) => item.institution === filters[2]);
-    }
-    if (filters[3] != '') {
-      data = data.filter((item) => {
-        let [, degreeType] = item.course.split(' - ');
-        const degreeTypeString: string = degreeType.trim();
-        return degreeTypeString === filters[3];
+      return setCoursesData(filteredCourses);
+    } else if (['shift', 'institution'].includes(filterKey)) {
+      const filteredCourses = initialCoursesData.filter((course) => {
+        return course[filterKey as 'course' | 'shift' | 'institution'].includes(
+          filter[filterKey]
+        );
       });
+      return setCoursesData(filteredCourses);
+    } else if (filterKey === 'degreeType') {
+      const filteredCourses = initialCoursesData.filter(({ course }) => {
+        const [, degreeType] = course.split(' - ');
+        return degreeType.trim() === filter[filterKey];
+      });
+      return setCoursesData(filteredCourses);
     }
-    setCouresData(data);
   };
 
-  const updateFilters = (index: number, filter: string) => {
-    if (
-      !courses.includes(filter) &&
-      !shifts.includes(filter) &&
-      !universities.includes(filter) &&
-      !degrees.includes(filter) &&
-      filter !== ''
-    ) {
-      return;
-    }
-    setCouresData(dataJson);
-    const newFilters = [...filters];
-    newFilters[index] = filter;
-    setFilters(newFilters);
-  };
+  const handleChange =
+    (key: keyof Filter) => (event: React.ChangeEvent<HTMLInputElement>) => {
+      setFilter((prev) => ({ ...prev, [key]: event.target.value }));
+      updateCourses(key);
+    };
 
   return (
     <div className="h-screen flex items-center flex-col px-6 py-4">
@@ -102,7 +93,7 @@ const Home = () => {
             list="coursesData"
             placeholder="Todos os cursos"
             className="border-[1px] border-gray-50 rounded-md w-full p-2"
-            onChange={(e) => updateFilters(0, e.target.value)}
+            onChange={handleChange('course')}
           />
           <datalist id="coursesData">
             {courses.map((item: string) => {
@@ -116,13 +107,12 @@ const Home = () => {
             list="shiftData"
             placeholder="Todos os turnos"
             className="border-[1px] border-gray-50 rounded-md w-full p-2"
-            onChange={(e) => updateFilters(1, e.target.value)}
+            onChange={handleChange('shift')}
           />
           <datalist id="shiftData">
-            <option>Integral</option>
-            <option>Matutino</option>
-            <option>Noturno</option>
-            <option>Vespertino</option>
+            {shifts.map((item: string) => {
+              return <option key={item}>{item}</option>;
+            })}
           </datalist>
         </div>
         <div className="py-2 w-full">
@@ -131,7 +121,7 @@ const Home = () => {
             list="universityData"
             placeholder="Todas as Universidades"
             className="border-[1px] border-gray-50 rounded-md w-full p-2"
-            onChange={(e) => updateFilters(2, e.target.value)}
+            onChange={handleChange('institution')}
           />
           <datalist id="universityData">
             {universities.map((item: string, key: number) => {
@@ -145,25 +135,54 @@ const Home = () => {
             list="degreeData"
             placeholder="Tipos de Graduação"
             className="border-[1px] border-gray-50 rounded-md w-full p-2"
-            onChange={(e) => updateFilters(3, e.target.value)}
+            onChange={handleChange('degreeType')}
           />
           <datalist id="degreeData">
-            <option>Bacharelado</option>
-            <option>Licenciatura</option>
+            {degrees.map((item: string, key: number) => {
+              return <option key={key}>{item}</option>;
+            })}
           </datalist>
         </div>
       </div>
-      {couresData.length === 0 ? (
+      {coursesData.length === 0 ? (
         <p>Nenhum resultado encontrado...</p>
       ) : (
-        <div className="flex flex-col gap-4">
-          {couresData.map((item: Course, key: number) => (
-            <CardCourse key={key} {...item} />
-          ))}
+        <div ref={viewPortRef}>
+          <ViewportList
+            viewportRef={viewPortRef}
+            items={coursesData}
+            itemSize={100}
+            initialPrerender={100}
+            itemMargin={16}
+          >
+            {(course, index) => <CardCourse key={index} {...course} />}
+          </ViewportList>
         </div>
       )}
     </div>
   );
+};
+
+export const getServerSideProps = () => {
+  const dataCourses: string[] = [];
+  const dataUniversity: string[] = [];
+
+  dataJson.forEach((item) => {
+    let [courseName] = item.course.split(' - ');
+    const couseNameString: string = courseName.trim();
+    !dataCourses.includes(couseNameString) && dataCourses.push(couseNameString);
+    !dataUniversity.includes(item.institution) &&
+      dataUniversity.push(item.institution);
+  });
+  const data = {
+    courses: dataCourses,
+    shifts: ['Integral', 'Matutino', 'Noturno', 'Vespertino'],
+    degrees: ['Licenciatura', 'Bacharelado'],
+    universities: dataUniversity,
+    initialCoursesData: dataJson,
+  };
+
+  return { props: { data } };
 };
 
 export default Home;
