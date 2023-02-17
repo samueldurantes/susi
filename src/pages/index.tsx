@@ -44,14 +44,18 @@ const Home = ({
         return name.trim() === filter[filterKey];
       });
       return setCoursesData(filteredCourses);
-    } else if (['shift', 'institution'].includes(filterKey)) {
+    }
+
+    if (['shift', 'institution'].includes(filterKey)) {
       const filteredCourses = initialCoursesData.filter((course) => {
         return course[filterKey as 'course' | 'shift' | 'institution'].includes(
           filter[filterKey]
         );
       });
       return setCoursesData(filteredCourses);
-    } else if (filterKey === 'degreeType') {
+    }
+
+    if (filterKey === 'degreeType') {
       const filteredCourses = initialCoursesData.filter(({ course }) => {
         const [, degreeType] = course.split(' - ');
         return degreeType.trim() === filter[filterKey];
