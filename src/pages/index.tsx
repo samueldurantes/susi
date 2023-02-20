@@ -167,7 +167,7 @@ const Home = ({
   );
 };
 
-export const getServerSideProps = () => {
+export const getStaticProps = () => {
   const dataCourses: string[] = [];
   const dataUniversity: string[] = [];
 
