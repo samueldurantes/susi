@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 * {
-  color: #d0cec9;
-  background-color: #181a1b;
+  color: #000;
+  background-color: #fff;
+  font-family: monospace;
 }
