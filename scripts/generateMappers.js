@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const json = require('./a.json');
+const json = require('../src/data/data.json');
 
 const coursesByInstitution = (data) => {
   const result = {};
@@ -11,7 +11,9 @@ const coursesByInstitution = (data) => {
     if (!result[institution]) {
       result[institution] = [course];
     } else {
-      result[institution].push(course);
+      if (!result[institution].includes(course)) {
+        result[institution].push(course);
+      }
     }
   });
 

@@ -42,7 +42,7 @@ const writeFile = (jsonData, fileName) => {
 };
 
 const workbook = XLSX.readFile(
-  path.resolve(__dirname, 'data', 'sisu2022-2.xlsx')
+  path.resolve(__dirname, 'data', 'sisu2023-1.xlsx')
 );
 
 const sheet_name_list = workbook.SheetNames;
@@ -56,7 +56,7 @@ const jsonData = xlData.map((course) => {
     institution: course.NO_IES,
     campus: course.NO_CAMPUS,
     course: `${course.NO_CURSO} - ${course.DS_GRAU}`,
-    cutoff_mark: course.NU_NOTACORTE,
+    cutoff_mark: course.NU_NOTACORTE ?? 0,
     group: course.DS_MOD_CONCORRENCIA,
     shift: course.DS_TURNO,
   };
