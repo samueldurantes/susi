@@ -15,27 +15,29 @@ const Card = ({
       <div className="flex">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 p-4">
           <div className="flex flex-col">
-            <span className="text-xs break-words">Instituição:</span>
+            <span className="text-xs break-words font-bold">Instituição:</span>
             <span className="text-sm break-words">{institution}</span>
           </div>
           <div className="flex flex-col">
-            <span className="text-xs break-words">Campus:</span>
+            <span className="text-xs break-words font-bold">Campus:</span>
             <span className="text-sm break-words">{campus}</span>
           </div>
           <div className="flex flex-col">
-            <span className="text-xs break-words">Curso:</span>
+            <span className="text-xs break-words font-bold">Curso:</span>
             <span className="text-sm break-words">{course}</span>
           </div>
           <div className="flex flex-col">
-            <span className="text-xs break-words">Nota de Corte:</span>
+            <span className="text-xs break-words font-bold">
+              Nota de Corte:
+            </span>
             <span className="text-sm break-words">{cutoff_mark}</span>
           </div>
           <div className="flex flex-col">
-            <span className="text-xs break-words">Grupo:</span>
+            <span className="text-xs break-words font-bold">Grupo:</span>
             <span className="text-sm break-words">{group}</span>
           </div>
           <div className="flex flex-col">
-            <span className="text-xs break-words">Turno:</span>
+            <span className="text-xs break-words font-bold">Turno:</span>
             <span className="text-sm break-words">{shift}</span>
           </div>
         </div>

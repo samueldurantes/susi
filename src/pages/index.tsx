@@ -24,13 +24,7 @@ const Home = () => {
 
       <div className="h-screen flex items-center flex-col px-6 py-4">
         <div className="flex flex-col max-w-4xl py-4 gap-4">
-          <div className="flex items-center gap-2">
-            <h1 className="text-2xl">Notas de cortes - ENEM</h1>
-            <select name="year" id="year" className="text-2xl">
-              <option value="2022">2022</option>
-              <option value="2023">2023</option>
-            </select>
-          </div>
+          <h1 className="text-2xl">Notas de cortes - ENEM 2023/1</h1>
           <p>
             Esse projeto foi criado com intuito de facilitar a visualização das
             notas de corte do SISU, já que eu tinha curiosidade em saber as
@@ -47,7 +41,7 @@ const Home = () => {
             para facilitar a vida de quem também tem essa curiosidade.
           </p>
         </div>
-        <div className="flex flex-col max-w-4xl py-4 gap-4 w-full gap-10">
+        <div className="flex flex-col max-w-4xl py-4 gap-4 w-full gap-8">
           <Filters />
           <div className="flex justify-center">
             <List />
