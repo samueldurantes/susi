@@ -6,8 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "w": "ts-node"
+    "lint": "next lint"
   },
   "dependencies": {
     "@next/font": "13.1.6",
@@ -28,7 +27,6 @@
     "postcss": "^8.4.18",
     "prettier": "^2.7.1",
     "tailwindcss": "^3.1.8",
-    "ts-node": "^10.9.1",
     "typescript": "4.8.4",
     "xlsx": "^0.18.5"
   }

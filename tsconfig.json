@@ -20,5 +20,5 @@
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
-  "exclude": ["scripts/generateData.ts", "node_modules"]
+  "exclude": ["node_modules"]
 }
