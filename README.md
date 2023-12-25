@@ -1,6 +1,6 @@
 # susi
 
-Hello! This project was created as a personal endeavor since I was curious about the previous year's cutoff scores. [SISU](https://acessounico.mec.gov.br/) only provides an [XLSX](https://en.wikipedia.org/wiki/Microsoft_Excel#File_formats) file with a lot of unnecessary information, so I decided to create this project to make life easier for anyone who shares this curiosity.
+A simple viewer of the cutoff scores for all Brazilian higher education institutions participating in [SISU](https://acessounico.mec.gov.br/).
 
 ## Getting started
 
