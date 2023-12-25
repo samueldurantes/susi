@@ -14,6 +14,7 @@ export const useFiltersFromLocation = () => {
 
     // Parse the filters string from the URL using query-string
     try {
+      // @ts-ignore
       const parsedFilters = queryString.parse(filters);
       return parsedFilters;
     } catch (error) {
@@ -22,6 +23,7 @@ export const useFiltersFromLocation = () => {
     }
   };
 
+  // @ts-ignore
   const setFiltersToLocation = (newFilters) => {
     const { pathname, query } = router;
     const currentFilters = getFiltersFromLocation();

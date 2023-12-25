@@ -2,7 +2,7 @@ import { Course } from '@/types';
 
 type Props = {} & Course;
 
-const CardCourse = ({
+const Card = ({
   institution,
   campus,
   course,
@@ -44,4 +44,4 @@ const CardCourse = ({
   );
 };
 
-export default CardCourse;
+export default Card;
