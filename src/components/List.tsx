@@ -39,7 +39,7 @@ const List = () => {
   ) : (
     <div
       ref={viewPortRef}
-      className="flex flex-col gap-4 h-screen overflow-auto border box-border rounded max-w-4xl px-6"
+      className="flex flex-col gap-4 border box-border rounded max-w-4xl px-6"
     >
       <ViewportList
         viewportRef={viewPortRef}
