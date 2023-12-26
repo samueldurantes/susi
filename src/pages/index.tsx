@@ -26,9 +26,9 @@ const Home = () => {
         <div className="flex flex-col max-w-4xl py-4 gap-4">
           <h1 className="text-2xl">Notas de cortes - ENEM 2023/1</h1>
           <p>
-            Esse projeto foi criado com intuito de facilitar a visualização das
-            notas de corte do SISU, já que eu tinha curiosidade em saber as
-            notas de corte do ano anterior e o SISU só disponibiliza um arquivo{' '}
+            O projeto foi desenvolvido para facilitar a visualização das notas
+            de corte do Sistema de Seleção Unificada (SISU). A motivação surgiu
+            da dificuldade em acessar as informações desejadas no arquivo{' '}
             <a
               className="text-blue-500 hover:text-blue-700 hover:underline"
               href="https://en.wikipedia.org/wiki/Microsoft_Excel#File_formats"
@@ -37,8 +37,7 @@ const Home = () => {
             >
               XLSX
             </a>{' '}
-            com muita informação desnecessária. Então, decidi criar este projeto
-            para facilitar a vida de quem também tem essa curiosidade.
+            fornecido pelo SISU, que continha mais detalhes do que necessário.
           </p>
         </div>
         <div className="flex flex-col max-w-4xl py-4 gap-4 w-full gap-8">
